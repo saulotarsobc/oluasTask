@@ -25,11 +25,28 @@ router.post("/", async (req: Request, res: Response) => {
     }
 });
 
+/* many users */
+router.get("/", async (req: Request, res: Response) => {
+    try {
+        const collections = await users.get();
+
+        res.json({
+            // success: true,
+            collections
+        });
+    }
+
+    catch (error) {
+        res.json({
+            success: false,
+            erro: error
+        });
+    }
+});
+
 router.get("/:id", async (req: Request, res: Response) => {
 
     const id = req.params?.id;
-
-    console.log(id);
 
     try {
         const user = await users.doc(id).get();
@@ -56,5 +73,7 @@ router.get("/:id", async (req: Request, res: Response) => {
         });
     }
 });
+
+
 
 export default router;

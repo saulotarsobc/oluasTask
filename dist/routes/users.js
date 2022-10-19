@@ -34,10 +34,25 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 }));
+/* many users */
+router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const collections = yield users.get();
+        res.json({
+            // success: true,
+            collections
+        });
+    }
+    catch (error) {
+        res.json({
+            success: false,
+            erro: error
+        });
+    }
+}));
 router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
-    console.log(id);
     try {
         const user = yield users.doc(id).get();
         if (!user.exists) {
