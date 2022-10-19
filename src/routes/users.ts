@@ -27,7 +27,9 @@ router.post("/", async (req: Request, res: Response) => {
 
 router.get("/:id", async (req: Request, res: Response) => {
 
-    const id = req.params.id || '';
+    const id = req.params?.id;
+
+    console.log(id);
 
     try {
         const user = await users.doc(id).get();
@@ -39,12 +41,14 @@ router.get("/:id", async (req: Request, res: Response) => {
             });
             return;
         }
-        
+
         res.json({
             success: true,
+            id,
             user: user.data()
         });
     }
+
     catch (error) {
         res.json({
             success: false,

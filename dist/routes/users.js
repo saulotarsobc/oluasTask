@@ -35,7 +35,9 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id || '';
+    var _a;
+    const id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    console.log(id);
     try {
         const user = yield users.doc(id).get();
         if (!user.exists) {
@@ -47,6 +49,7 @@ router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         res.json({
             success: true,
+            id,
             user: user.data()
         });
     }
