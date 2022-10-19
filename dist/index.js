@@ -9,4 +9,6 @@ const tasks_1 = __importDefault(require("./routes/tasks"));
 const app = (0, express_1.default)();
 app.use('/users', users_1.default);
 app.use('/tasks', tasks_1.default);
-app.listen(3000, () => { console.log('server running'); });
+app.listen(3000, (event) => {
+    console.log('server running', event);
+});

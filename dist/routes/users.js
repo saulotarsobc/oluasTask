@@ -18,6 +18,7 @@ const fb_1 = __importDefault(require("./fb"));
 const users = fb_1.default.collection("users");
 const router = express_1.default.Router();
 router.use(body_parser_1.default.json());
+/* add user */
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, age } = req.body;
     try {
@@ -34,7 +35,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 }));
-/* many users */
+/* get many users */
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const collections = yield users.get();
@@ -50,6 +51,7 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 }));
+/* get user by id */
 router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;

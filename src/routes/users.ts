@@ -7,6 +7,7 @@ const users = db.collection("users");
 const router = express.Router();
 router.use(bodyParser.json());
 
+/* add user */
 router.post("/", async (req: Request, res: Response) => {
     const { name, age } = req.body;
 
@@ -25,7 +26,7 @@ router.post("/", async (req: Request, res: Response) => {
     }
 });
 
-/* many users */
+/* get many users */
 router.get("/", async (req: Request, res: Response) => {
     try {
         const collections = await users.get();
@@ -44,6 +45,7 @@ router.get("/", async (req: Request, res: Response) => {
     }
 });
 
+/* get user by id */
 router.get("/:id", async (req: Request, res: Response) => {
 
     const id = req.params?.id;
