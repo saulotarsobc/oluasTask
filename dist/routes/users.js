@@ -16,20 +16,20 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const fb_1 = require("./fb");
 /* testes */
-function teste() {
-    return __awaiter(this, void 0, void 0, function* () {
-        let usersColection = [];
-        const data = yield fb_1.users.get();
-        data.docs.map((user) => {
-            usersColection.push({
-                id: user.id,
-                data: user.data(),
-            });
-        });
-        console.log(usersColection);
-    });
-}
-teste();
+// async function teste() {
+//     let usersColection: any = []
+//     const data = await users.get();
+//     data.docs.map((user) => {
+//         const id = user.id;
+//         const data = user.data()
+//         usersColection.push({
+//             id,
+//             data
+//         });
+//     });
+//     console.log(usersColection)
+// }
+// teste();
 /* testes */
 const router = express_1.default.Router();
 router.use(body_parser_1.default.json());
@@ -52,12 +52,19 @@ router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 }));
 /* get many users */
 router.get("/getMany", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { filter } = req.body;
+    // const { filter } = req.body
     try {
-        const manyUsers = yield fb_1.users.where("age", "==", 22);
+        let usersColection = [];
+        const data = yield fb_1.users.get();
+        data.docs.map((user) => {
+            usersColection.push({
+                id: user.id,
+                data: user.data()
+            });
+        });
         res.json({
             success: false,
-            erro: 'error'
+            usersColection
         });
     }
     catch (error) {
@@ -83,7 +90,7 @@ router.get("/getById/:id", (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.json({
             success: true,
             id,
-            user: user.data()
+            data: user.data()
         });
     }
     catch (error) {

@@ -18,11 +18,11 @@ const fb_1 = require("./fb");
 const router = express_1.default.Router();
 router.use(body_parser_1.default.json());
 router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { user_id } = req.body;
-    if (!user_id) {
+    const { task_id } = req.body;
+    if (!task_id) {
         res.json({
             success: false,
-            msg: "precisa de 'user_id'"
+            msg: "precisa de 'task_id'"
         });
         return;
     }
@@ -38,6 +38,56 @@ router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.json({
             success: false,
             error: error
+        });
+    }
+}));
+/* get many tasks */
+router.get("/getMany", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const { filter } = req.body
+    try {
+        let tasksColection = [];
+        const data = yield fb_1.tasks.get();
+        data.docs.map((task) => {
+            tasksColection.push({
+                id: task.id,
+                data: task.data()
+            });
+        });
+        res.json({
+            success: false,
+            tasksColection
+        });
+    }
+    catch (error) {
+        res.json({
+            success: false,
+            erro: error
+        });
+    }
+}));
+/* get task by id */
+router.get("/getById/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    try {
+        const task = yield fb_1.tasks.doc(id).get();
+        if (!task.exists) {
+            res.json({
+                success: false,
+                erro: `task ${id} nao encontrado`
+            });
+            return;
+        }
+        res.json({
+            success: true,
+            id,
+            data: task.data()
+        });
+    }
+    catch (error) {
+        res.json({
+            success: false,
+            erro: error
         });
     }
 }));

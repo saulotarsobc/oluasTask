@@ -6,12 +6,12 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 router.post("/add", async (req: Request, res: Response) => {
-    const { user_id } = req.body;
+    const { task_id } = req.body;
 
-    if (!user_id) {
+    if (!task_id) {
         res.json({
             success: false,
-            msg: "precisa de 'user_id'"
+            msg: "precisa de 'task_id'"
         });
         return;
     }
@@ -29,6 +29,65 @@ router.post("/add", async (req: Request, res: Response) => {
         res.json({
             success: false,
             error: error
+        });
+    }
+});
+
+/* get many tasks */
+router.get("/getMany", async (req: Request, res: Response) => {
+
+    // const { filter } = req.body
+
+    try {
+        let tasksColection: any = []
+        const data = await tasks.get();
+        data.docs.map((task) => {
+            tasksColection.push({
+                id: task.id,
+                data: task.data()
+            });
+        });
+        res.json({
+            success: false,
+            tasksColection
+        });
+    }
+
+    catch (error) {
+        res.json({
+            success: false,
+            erro: error
+        });
+    }
+});
+
+/* get task by id */
+router.get("/getById/:id", async (req: Request, res: Response) => {
+
+    const id = req.params?.id;
+
+    try {
+        const task = await tasks.doc(id).get();
+
+        if (!task.exists) {
+            res.json({
+                success: false,
+                erro: `task ${id} nao encontrado`
+            });
+            return;
+        }
+
+        res.json({
+            success: true,
+            id,
+            data: task.data()
+        });
+    }
+
+    catch (error) {
+        res.json({
+            success: false,
+            erro: error
         });
     }
 });

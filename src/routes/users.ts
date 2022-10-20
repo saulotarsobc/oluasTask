@@ -3,18 +3,20 @@ import bodyParser from "body-parser";
 import { users } from "./fb";
 
 /* testes */
-async function teste() {
-    let usersColection: any = []
-    const data = await users.get();
-    data.docs.map((user) => {
-        usersColection.push({
-            id: user.id,
-            data: user.data(),
-        })
-    });
-    console.log(usersColection)
-}
-teste();
+// async function teste() {
+//     let usersColection: any = []
+//     const data = await users.get();
+//     data.docs.map((user) => {
+//         const id = user.id;
+//         const data = user.data()
+//         usersColection.push({
+//             id,
+//             data
+//         });
+//     });
+//     console.log(usersColection)
+// }
+// teste();
 /* testes */
 
 const router = express.Router();
@@ -42,13 +44,20 @@ router.post("/add", async (req: Request, res: Response) => {
 /* get many users */
 router.get("/getMany", async (req: Request, res: Response) => {
 
-    const { filter } = req.body
+    // const { filter } = req.body
 
     try {
-        const manyUsers = await users.where("age", "==", 22);
+        let usersColection: any = []
+        const data = await users.get();
+        data.docs.map((user) => {
+            usersColection.push({
+                id: user.id,
+                data: user.data()
+            });
+        });
         res.json({
             success: false,
-            erro: 'error'
+            usersColection
         });
     }
 
@@ -79,7 +88,7 @@ router.get("/getById/:id", async (req: Request, res: Response) => {
         res.json({
             success: true,
             id,
-            user: user.data()
+            data: user.data()
         });
     }
 
