@@ -1,8 +1,6 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import db from './fb';
-
-const tasks = db.collection('tasks');
+import { tasks } from './fb';
 
 const router = express.Router();
 router.use(bodyParser.json());

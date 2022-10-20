@@ -14,15 +14,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const fb_1 = __importDefault(require("./fb"));
-const users = fb_1.default.collection("users");
+const fb_1 = require("./fb");
+/* testes */
+function teste() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let usersColection = [];
+        const data = yield fb_1.users.get();
+        data.docs.map((user) => {
+            usersColection.push({
+                id: user.id,
+                data: user.data(),
+            });
+        });
+        console.log(usersColection);
+    });
+}
+teste();
+/* testes */
 const router = express_1.default.Router();
 router.use(body_parser_1.default.json());
 /* add user */
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, age } = req.body;
     try {
-        const { id } = yield users.add({ name, age });
+        const { id } = yield fb_1.users.add({ name, age });
         res.json({
             success: true,
             id
@@ -36,12 +51,13 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 /* get many users */
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/getMany", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { filter } = req.body;
     try {
-        const collections = yield users.get();
+        const manyUsers = yield fb_1.users.where("age", "==", 22);
         res.json({
-            // success: true,
-            collections
+            success: false,
+            erro: 'error'
         });
     }
     catch (error) {
@@ -52,11 +68,11 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 /* get user by id */
-router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/getById/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
     try {
-        const user = yield users.doc(id).get();
+        const user = yield fb_1.users.doc(id).get();
         if (!user.exists) {
             res.json({
                 success: false,

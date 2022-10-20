@@ -14,8 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const fb_1 = __importDefault(require("./fb"));
-const tasks = fb_1.default.collection('tasks');
+const fb_1 = require("./fb");
 const router = express_1.default.Router();
 router.use(body_parser_1.default.json());
 router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,7 +28,7 @@ router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     const task = req.body;
     try {
-        const { id } = yield tasks.add(task);
+        const { id } = yield fb_1.tasks.add(task);
         res.json({
             success: true,
             id

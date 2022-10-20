@@ -1,14 +1,27 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import db from "./fb";
+import { users } from "./fb";
 
-const users = db.collection("users");
+/* testes */
+async function teste() {
+    let usersColection: any = []
+    const data = await users.get();
+    data.docs.map((user) => {
+        usersColection.push({
+            id: user.id,
+            data: user.data(),
+        })
+    });
+    console.log(usersColection)
+}
+teste();
+/* testes */
 
 const router = express.Router();
 router.use(bodyParser.json());
 
 /* add user */
-router.post("/", async (req: Request, res: Response) => {
+router.post("/add", async (req: Request, res: Response) => {
     const { name, age } = req.body;
 
     try {
@@ -27,13 +40,15 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 /* get many users */
-router.get("/", async (req: Request, res: Response) => {
-    try {
-        const collections = await users.get();
+router.get("/getMany", async (req: Request, res: Response) => {
 
+    const { filter } = req.body
+
+    try {
+        const manyUsers = await users.where("age", "==", 22);
         res.json({
-            // success: true,
-            collections
+            success: false,
+            erro: 'error'
         });
     }
 
@@ -46,7 +61,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 /* get user by id */
-router.get("/:id", async (req: Request, res: Response) => {
+router.get("/getById/:id", async (req: Request, res: Response) => {
 
     const id = req.params?.id;
 
@@ -75,7 +90,5 @@ router.get("/:id", async (req: Request, res: Response) => {
         });
     }
 });
-
-
 
 export default router;

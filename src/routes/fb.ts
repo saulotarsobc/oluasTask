@@ -9,4 +9,8 @@ initializeApp({
 
 const db = getFirestore();
 
-export default db;
+/* exports */
+export const users = db.collection('users');
+export const tasks = db.collection('tasks');
+
+// export default db;
