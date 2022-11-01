@@ -5,6 +5,7 @@ import { tasks } from './fb';
 const router = express.Router();
 router.use(bodyParser.json());
 
+/* add task */
 router.post("/add", async (req: Request, res: Response) => {
     const { task_id } = req.body;
 
